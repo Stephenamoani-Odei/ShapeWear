@@ -100,7 +100,7 @@ export function Home() {
                 </div>
               </div>
               <h3 className="font-semibold mb-2">Free Shipping</h3>
-              <p className="text-gray-600">On orders over $100</p>
+              <p className="text-gray-600">On orders over ₵100</p>
             </div>
 
             <div data-aos="fade-up" data-aos-delay="100" className="text-center">

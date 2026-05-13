@@ -8,6 +8,7 @@ import { ReviewSection } from '../components/ReviewSection';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { toast } from 'sonner';
+import { formatCurrency } from '../utils/currency';
 
 export function ProductDetail() {
   const { id } = useParams();
@@ -75,7 +76,7 @@ export function ProductDetail() {
             <div className="lg:sticky lg:top-24">
               <p className="text-sm text-gray-500 mb-2">{product.category}</p>
               <h1 className="mb-4">{product.name}</h1>
-              <p className="text-3xl font-bold mb-6">${product.price.toFixed(2)}</p>
+              <p className="text-3xl font-bold mb-6">{formatCurrency(product.price)}</p>
 
               <p className="text-gray-600 mb-8">{product.description}</p>
 

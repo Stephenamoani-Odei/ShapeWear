@@ -4,6 +4,7 @@ import { ProductCard } from '../components/ProductCard';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { Search, Filter, X } from 'lucide-react';
+import { formatCurrency } from '../utils/currency';
 
 export function Shop() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
@@ -121,7 +122,7 @@ export function Shop() {
                 {/* Price Range */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Price Range: ${priceRange[0]} - ${priceRange[1]}
+                    Price Range: {formatCurrency(priceRange[0])} - {formatCurrency(priceRange[1])}
                   </label>
                   <div className="space-y-2">
                     <input

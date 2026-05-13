@@ -4,6 +4,7 @@ import { useApp } from '../context/AppContext';
 import { User, Package, Settings, LogOut } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { formatCurrency } from '../utils/currency';
 
 export function Account() {
   const { user, logout } = useApp();
@@ -77,7 +78,7 @@ export function Account() {
                         </span>
                       </div>
                       <p className="text-sm text-gray-600 mb-2">
-                        {order.items.length} item{order.items.length !== 1 ? 's' : ''} • ${order.total.toFixed(2)}
+                        {order.items.length} item{order.items.length !== 1 ? 's' : ''} • {formatCurrency(order.total)}
                       </p>
                       <button className="text-sm text-black hover:underline">
                         View Details

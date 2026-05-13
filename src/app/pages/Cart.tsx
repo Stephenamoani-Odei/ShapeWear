@@ -5,6 +5,7 @@ import { Trash2, ShoppingBag } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { formatCurrency } from '../utils/currency';
 
 export function Cart() {
   const { cart, removeFromCart, updateQuantity, cartTotal } = useApp();
@@ -100,7 +101,7 @@ export function Cart() {
                         </button>
                       </div>
                       <p className="font-semibold">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        {formatCurrency(item.price * item.quantity)}
                       </p>
                     </div>
                   </div>
@@ -120,19 +121,19 @@ export function Cart() {
               <div className="space-y-4 mb-6">
                 <div className="flex justify-between">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-semibold">${cartTotal.toFixed(2)}</span>
+                  <span className="font-semibold">{formatCurrency(cartTotal)}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
                   <span className="font-semibold">
-                    {cartTotal > 100 ? 'FREE' : '$9.99'}
+                    {cartTotal > 1000 ? 'FREE' : formatCurrency(9.99)}
                   </span>
                 </div>
                 <div className="border-t border-gray-300 pt-4">
                   <div className="flex justify-between">
                     <span className="font-semibold">Total</span>
                     <span className="font-bold text-xl">
-                      ${(cartTotal + (cartTotal > 100 ? 0 : 9.99)).toFixed(2)}
+                      {formatCurrency(cartTotal + (cartTotal > 1000 ? 0 : 9.99))}
                     </span>
                   </div>
                 </div>
@@ -152,9 +153,9 @@ export function Cart() {
                 Continue Shopping
               </Link>
 
-              {cartTotal > 100 && (
+              {cartTotal > 1000 && (
                 <p className="text-sm text-green-600 mt-4 text-center">
-                  You qualify for free shipping!
+                  You qualify for free Delivery!
                 </p>
               )}
             </div>

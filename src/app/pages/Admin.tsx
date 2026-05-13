@@ -5,6 +5,7 @@ import { products } from '../data/products';
 import { BarChart3, Users, Package, DollarSign, Edit, Trash2, Plus } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { formatCurrency } from '../utils/currency';
 
 export function Admin() {
   const { user } = useApp();
@@ -88,7 +89,7 @@ export function Admin() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Total Revenue</p>
-                    <p className="text-2xl font-bold">${analytics.totalRevenue.toLocaleString()}</p>
+                    <p className="text-2xl font-bold">{formatCurrency(analytics.totalRevenue)}</p>
                   </div>
                   <DollarSign className="w-8 h-8 text-green-600" />
                 </div>
@@ -139,7 +140,7 @@ export function Admin() {
                         <p className="text-sm text-gray-600">{order.customer}</p>
                       </div>
                       <div className="text-right">
-                        <p className="font-semibold">${order.total}</p>
+                        <p className="font-semibold">{formatCurrency(order.total)}</p>
                         <p className="text-sm text-gray-600">{order.date}</p>
                       </div>
                       <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
@@ -207,7 +208,7 @@ export function Admin() {
                           {product.category}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                          ${product.price.toFixed(2)}
+                          {formatCurrency(product.price)}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
@@ -251,7 +252,7 @@ export function Admin() {
                       <p className="text-sm text-gray-600">{order.customer}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-semibold">${order.total}</p>
+                      <p className="font-semibold">{formatCurrency(order.total)}</p>
                       <p className="text-sm text-gray-600">{order.date}</p>
                     </div>
                     <div className="flex items-center space-x-4">

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
-import { Lock, CreditCard } from 'lucide-react';
+import { Lock, CreditCard, Phone } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import { toast } from 'sonner';
+import { formatCurrency } from '../utils/currency';
 
 export function Checkout() {
   const { cart, cartTotal, clearCart, user } = useApp();
@@ -31,6 +32,8 @@ export function Checkout() {
     city: '',
     state: '',
     zipCode: '',
+    paymentMethod: 'card' as 'card' | 'momo',
+    momoPhone: '',
     cardNumber: '',
     cardExpiry: '',
     cardCvc: '',
@@ -40,12 +43,12 @@ export function Checkout() {
     e.preventDefault();
     setLoading(true);
 
-    // Security Note: In production, NEVER handle payment card data directly
-    // Use payment processors like Stripe, PayPal, or Square with tokenization
-    // This is a mock implementation for demonstration only
+    // Security Note: In production, NEVER handle payment card data directly.
+    // Use Paystack or another payment provider for secure processing.
+    // This demo includes a MoMo payment option that can be connected to Paystack.
 
     // Input validation
-    if (!formData.email || !formData.firstName || !formData.lastName) {
+    if (!formData.email || !formData.firstName || !formData.lastName || !formData.address) {
       toast.error('Please fill in all required fields');
       setLoading(false);
       return;
@@ -59,14 +62,25 @@ export function Checkout() {
       return;
     }
 
-    // Mock payment processing
+    if (formData.paymentMethod === 'momo' && !/^0\d{9}$/.test(formData.momoPhone)) {
+      toast.error('Please enter a valid MoMo phone number');
+      setLoading(false);
+      return;
+    }
+
+    if (formData.paymentMethod === 'card') {
+      if (!formData.cardNumber || !formData.cardExpiry || !formData.cardCvc) {
+        toast.error('Please enter your card details');
+        setLoading(false);
+        return;
+      }
+    }
+
+    // Mock payment processing. Replace this with Paystack transaction creation and verification.
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    // Clear cart and show success
     clearCart();
     toast.success('Order placed successfully!');
-
-    // Redirect to success page or home
     navigate('/');
     setLoading(false);
   };
@@ -78,7 +92,7 @@ export function Checkout() {
     setFormData((prev) => ({ ...prev, [name]: sanitizedValue }));
   };
 
-  const shippingCost = cartTotal > 100 ? 0 : 9.99;
+  const shippingCost = cartTotal > 1000 ? 0 : 9.99;
   const total = cartTotal + shippingCost;
 
   return (
@@ -197,56 +211,100 @@ export function Checkout() {
                     <CreditCard className="w-5 h-5 mr-2" />
                     Payment Information
                   </h3>
+
+                  <div className="grid grid-cols-2 gap-4 mb-4">
+                    {['card', 'momo'].map((method) => (
+                      <button
+                        type="button"
+                        key={method}
+                        onClick={() => setFormData((prev) => ({ ...prev, paymentMethod: method as 'card' | 'momo' }))}
+                        className={`w-full px-4 py-3 border rounded text-sm font-semibold transition-colors ${
+                          formData.paymentMethod === method
+                            ? 'bg-black text-white border-black'
+                            : 'bg-white text-gray-700 border-gray-300 hover:border-black'
+                        }`}
+                      >
+                        {method === 'card' ? 'Card' : 'MoMo'}
+                      </button>
+                    ))}
+                  </div>
+
                   <p className="text-sm text-gray-500 mb-4">
-                    Note: This is a demo. Use test card: 4242 4242 4242 4242
+                    Note: This is a demo. Use Paystack to process card or MoMo payments securely.
                   </p>
 
-                  <div>
-                    <label className="block text-sm font-semibold mb-2">
-                      Card Number *
-                    </label>
-                    <input
-                      type="text"
-                      name="cardNumber"
-                      value={formData.cardNumber}
-                      onChange={handleInputChange}
-                      placeholder="4242 4242 4242 4242"
-                      required
-                      maxLength={19}
-                      className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black"
-                    />
-                  </div>
+                  {formData.paymentMethod === 'card' ? (
+                    <>
+                      <div>
+                        <label className="block text-sm font-semibold mb-2">
+                          Card Number *
+                        </label>
+                        <input
+                          type="text"
+                          name="cardNumber"
+                          value={formData.cardNumber}
+                          onChange={handleInputChange}
+                          placeholder="4242 4242 4242 4242"
+                          required
+                          maxLength={19}
+                          className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black"
+                        />
+                      </div>
 
-                  <div className="grid grid-cols-2 gap-4 mt-4">
+                      <div className="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                          <label className="block text-sm font-semibold mb-2">
+                            Expiry *
+                          </label>
+                          <input
+                            type="text"
+                            name="cardExpiry"
+                            value={formData.cardExpiry}
+                            onChange={handleInputChange}
+                            placeholder="MM/YY"
+                            required
+                            maxLength={5}
+                            className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-semibold mb-2">CVC *</label>
+                          <input
+                            type="text"
+                            name="cardCvc"
+                            value={formData.cardCvc}
+                            onChange={handleInputChange}
+                            placeholder="123"
+                            required
+                            maxLength={4}
+                            className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black"
+                          />
+                        </div>
+                      </div>
+                    </>
+                  ) : (
                     <div>
                       <label className="block text-sm font-semibold mb-2">
-                        Expiry *
+                        MoMo Phone Number *
                       </label>
-                      <input
-                        type="text"
-                        name="cardExpiry"
-                        value={formData.cardExpiry}
-                        onChange={handleInputChange}
-                        placeholder="MM/YY"
-                        required
-                        maxLength={5}
-                        className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black"
-                      />
+                      <div className="relative">
+                        <Phone className="absolute left-4 top-3.5 text-gray-400" />
+                        <input
+                          type="text"
+                          name="momoPhone"
+                          value={formData.momoPhone}
+                          onChange={handleInputChange}
+                          placeholder="024xxxxxxxx"
+                          required
+                          maxLength={10}
+                          className="w-full pl-12 px-4 py-3 border border-gray-300 focus:outline-none focus:border-black"
+                        />
+                      </div>
+                      <p className="text-sm text-gray-500 mt-2">
+                        Use your Ghana MoMo number to pay through Paystack.
+                      </p>
                     </div>
-                    <div>
-                      <label className="block text-sm font-semibold mb-2">CVC *</label>
-                      <input
-                        type="text"
-                        name="cardCvc"
-                        value={formData.cardCvc}
-                        onChange={handleInputChange}
-                        placeholder="123"
-                        required
-                        maxLength={4}
-                        className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:border-black"
-                      />
-                    </div>
-                  </div>
+                  )}
                 </div>
 
                 <button
@@ -254,7 +312,7 @@ export function Checkout() {
                   disabled={loading}
                   className="w-full bg-black text-white py-4 font-semibold hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                 >
-                  {loading ? 'Processing...' : `Pay $${total.toFixed(2)}`}
+                  {loading ? 'Processing...' : `Pay ${formatCurrency(total)}`}
                 </button>
 
                 <p className="text-xs text-gray-500 text-center">
@@ -285,7 +343,7 @@ export function Checkout() {
                       )}
                     </div>
                     <p className="font-semibold">
-                      ${(item.price * item.quantity).toFixed(2)}
+                      {formatCurrency(item.price * item.quantity)}
                     </p>
                   </div>
                 ))}
@@ -294,17 +352,17 @@ export function Checkout() {
               <div className="space-y-3 border-t border-gray-200 pt-6">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Subtotal</span>
-                  <span className="font-semibold">${cartTotal.toFixed(2)}</span>
+                  <span className="font-semibold">{formatCurrency(cartTotal)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-600">Shipping</span>
                   <span className="font-semibold">
-                    {shippingCost === 0 ? 'FREE' : `$${shippingCost.toFixed(2)}`}
+                    {shippingCost === 0 ? 'FREE' : formatCurrency(shippingCost)}
                   </span>
                 </div>
                 <div className="flex justify-between border-t border-gray-200 pt-3">
                   <span className="font-semibold">Total</span>
-                  <span className="font-bold text-xl">${total.toFixed(2)}</span>
+                  <span className="font-bold text-xl">{formatCurrency(total)}</span>
                 </div>
               </div>
             </div>

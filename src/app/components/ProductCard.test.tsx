@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router';
 import { ProductCard } from '../components/ProductCard';
@@ -30,7 +31,7 @@ describe('ProductCard', () => {
     renderWithProviders(<ProductCard product={mockProduct} />);
 
     expect(screen.getByText('Test Product')).toBeInTheDocument();
-    expect(screen.getByText('$29.99')).toBeInTheDocument();
+    expect(screen.getByText('₵29.99')).toBeInTheDocument();
     expect(screen.getByText('Test')).toBeInTheDocument();
   });
 

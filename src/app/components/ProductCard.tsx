@@ -4,6 +4,7 @@ import { motion } from 'motion/react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 import { Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
+import { formatCurrency } from '../utils/currency';
 
 interface ProductCardProps {
   product: Product;
@@ -62,7 +63,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <h3 className="font-semibold mb-2 group-hover:text-gray-600 transition-colors">
             {product.name}
           </h3>
-          <p className="font-semibold">${product.price.toFixed(2)}</p>
+          <p className="font-semibold">{formatCurrency(product.price)}</p>
         </div>
       </motion.div>
     </Link>
