@@ -29,7 +29,7 @@ export const products: Product[] = [
     reviews: [
       {
         id: 1,
-        userId: 1,
+        userId: '1',
         userName: 'Sarah M.',
         rating: 5,
         comment: 'These leggings are amazing! Great fit and very comfortable for workouts.',
@@ -37,7 +37,7 @@ export const products: Product[] = [
       },
       {
         id: 2,
-        userId: 2,
+        userId: '2',
         userName: 'Emily R.',
         rating: 4,
         comment: 'Love the compression and the material is high quality. Would buy again.',
@@ -66,7 +66,7 @@ export const products: Product[] = [
     reviews: [
       {
         id: 3,
-        userId: 3,
+        userId: '3',
         userName: 'Mike T.',
         rating: 5,
         comment: 'Perfect fit and great quality. The material is breathable and comfortable.',
