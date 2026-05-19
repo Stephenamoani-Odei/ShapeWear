@@ -1,8 +1,10 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase } from '../utils/supabase';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 export interface Review {
   id: number;
-  userId: number;
+  userId: string;
   userName: string;
   rating: number;
   comment: string;
@@ -46,16 +48,16 @@ export interface Order {
 }
 
 export interface User {
-  id: number;
+  id: string;
   email: string;
   name: string;
-  token: string;
   orders?: Order[];
 }
 
 interface AppContextType {
   cart: CartItem[];
   user: User | null;
+  authLoading: boolean;
   addToCart: (product: Product, quantity?: number, size?: string, color?: string) => void;
   removeFromCart: (productId: number, size?: string, color?: string) => void;
   updateQuantity: (productId: number, quantity: number, size?: string, color?: string) => void;
@@ -75,44 +77,89 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+// Helper: map a Supabase auth user → our User shape
+function mapSupabaseUser(supabaseUser: SupabaseUser): User {
+  return {
+    id: supabaseUser.id,
+    email: supabaseUser.email ?? '',
+    name:
+      supabaseUser.user_metadata?.name ??
+      supabaseUser.email?.split('@')[0] ??
+      'User',
+  };
+}
+
 export function AppProvider({ children }: { children: ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>(() => {
     const saved = localStorage.getItem('cart');
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [user, setUser] = useState<User | null>(() => {
-    const saved = localStorage.getItem('user');
-    return saved ? JSON.parse(saved) : null;
-  });
+  const [user, setUser] = useState<User | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
 
   const [wishlist, setWishlist] = useState<number[]>(() => {
     const saved = localStorage.getItem('wishlist');
     return saved ? JSON.parse(saved) : [];
   });
 
-  // Local reviews keyed by productId — persisted so they survive page refresh
   const [localReviews, setLocalReviews] = useState<Record<number, Review[]>>(() => {
     const saved = localStorage.getItem('localReviews');
     return saved ? JSON.parse(saved) : {};
   });
 
+  // ─── Supabase Auth Listener ─────────────────────────────────────────────────
+  useEffect(() => {
+    // Check active session on mount
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ? mapSupabaseUser(session.user) : null);
+      setAuthLoading(false);
+    });
+
+    // Listen for login / logout events
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ? mapSupabaseUser(session.user) : null);
+      setAuthLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // ─── Persist cart & wishlist ─────────────────────────────────────────────────
   useEffect(() => {
     localStorage.setItem('cart', JSON.stringify(cart));
   }, [cart]);
 
   useEffect(() => {
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('user');
-    }
-  }, [user]);
-
-  useEffect(() => {
     localStorage.setItem('wishlist', JSON.stringify(wishlist));
   }, [wishlist]);
 
+  // ─── Auth Actions ────────────────────────────────────────────────────────────
+  const login = async (email: string, password: string) => {
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) throw new Error(error.message);
+  };
+
+  const register = async (email: string, password: string, name: string) => {
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { name }, // stored in user_metadata
+      },
+    });
+    if (error) throw new Error(error.message);
+    // Note: Supabase sends a confirmation email by default.
+    // You can disable this in: Supabase Dashboard → Auth → Settings → "Enable email confirmations"
+  };
+
+  const logout = async () => {
+    await supabase.auth.signOut();
+    setUser(null);
+    localStorage.removeItem('user');
+  };
+
+  // ─── Cart Actions ─────────────────────────────────────────────────────────────
   const addToCart = (product: Product, quantity = 1, size?: string, color?: string) => {
     setCart((prev) => {
       const existing = prev.find(
@@ -151,25 +198,20 @@ export function AppProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const clearCart = () => {
-    setCart([]);
-  };
+  const clearCart = () => setCart([]);
 
+  // ─── Wishlist Actions ─────────────────────────────────────────────────────────
   const addToWishlist = (productId: number) => {
-    setWishlist((prev) => {
-      if (prev.includes(productId)) return prev;
-      return [...prev, productId];
-    });
+    setWishlist((prev) => (prev.includes(productId) ? prev : [...prev, productId]));
   };
 
   const removeFromWishlist = (productId: number) => {
     setWishlist((prev) => prev.filter((id) => id !== productId));
   };
 
-  const isInWishlist = (productId: number) => {
-    return wishlist.includes(productId);
-  };
+  const isInWishlist = (productId: number) => wishlist.includes(productId);
 
+  // ─── Review Actions ───────────────────────────────────────────────────────────
   const addReview = (productId: number, rating: number, comment: string) => {
     if (!user) throw new Error('Must be logged in to add a review');
 
@@ -183,121 +225,10 @@ export function AppProvider({ children }: { children: ReactNode }) {
     };
 
     setLocalReviews((prev) => {
-      const existing = prev[productId] || [];
-      const updated = { ...prev, [productId]: [...existing, newReview] };
+      const updated = { ...prev, [productId]: [...(prev[productId] || []), newReview] };
       localStorage.setItem('localReviews', JSON.stringify(updated));
       return updated;
     });
-  };
-
-  const login = async (email: string, password: string) => {
-    // Mock authentication - in production, this would call a real API
-    // Security note: Always use HTTPS, secure tokens (JWT), and httpOnly cookies
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Input validation
-    if (!email || !password) {
-      throw new Error('Email and password are required');
-    }
-
-    // Mock user data
-    const mockUser: User = {
-      id: 1,
-      email: email,
-      name: email.split('@')[0],
-      token: 'mock_jwt_token_' + Math.random().toString(36),
-      orders: [
-        {
-          id: 'ORD-001',
-          date: '2024-01-15',
-          status: 'delivered',
-          items: [
-            {
-              id: 1,
-              name: "Women's Sculpt Leggings",
-              price: 64.99,
-              image: '',
-              category: 'Women',
-              description: '',
-              features: [],
-              colors: [],
-              inStock: true,
-              quantity: 1,
-              color: 'Black',
-              size: 'M'
-            }
-          ],
-          total: 64.99,
-          shippingAddress: {
-            name: 'John Doe',
-            address: '123 Main St',
-            city: 'New York',
-            zipCode: '10001',
-            country: 'USA'
-          }
-        },
-        {
-          id: 'ORD-002',
-          date: '2024-01-20',
-          status: 'shipped',
-          items: [
-            {
-              id: 2,
-              name: "Men's Performance Tee",
-              price: 39.99,
-              image: '',
-              category: 'Men',
-              description: '',
-              features: [],
-              colors: [],
-              inStock: true,
-              quantity: 2,
-              color: 'Black',
-              size: 'L'
-            }
-          ],
-          total: 79.98,
-          shippingAddress: {
-            name: 'John Doe',
-            address: '123 Main St',
-            city: 'New York',
-            zipCode: '10001',
-            country: 'USA'
-          }
-        }
-      ]
-    };
-
-    setUser(mockUser);
-  };
-
-  const register = async (email: string, password: string, name: string) => {
-    // Mock registration - in production, validate inputs server-side
-    // Security: Hash passwords with bcrypt, validate email format, check password strength
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // Basic client-side validation
-    if (!email || !password || !name) {
-      throw new Error('All fields are required');
-    }
-
-    if (password.length < 8) {
-      throw new Error('Password must be at least 8 characters');
-    }
-
-    const mockUser: User = {
-      id: Date.now(),
-      email,
-      name,
-      token: 'mock_jwt_token_' + Math.random().toString(36),
-    };
-
-    setUser(mockUser);
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
   };
 
   const getProductReviews = (productId: number, baseReviews: Review[] = []) => {
@@ -313,6 +244,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       value={{
         cart,
         user,
+        authLoading,
         addToCart,
         removeFromCart,
         updateQuantity,

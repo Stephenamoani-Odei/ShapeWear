@@ -7,7 +7,7 @@ const PaystackCheckout = () => {
     reference: (new Date()).getTime().toString(), 
     email: "customer@example.com",
     amount: 5000, 
-    publicKey: 'pk_test_f478e7905e24b56f32008323aa30896142f93869', 
+    publicKey: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY, 
     currency: 'GHS', 
   };
 

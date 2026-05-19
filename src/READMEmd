@@ -1,0 +1,25 @@
+Shapewear Body Fit Weebsite
+
+A simmple Saas Ecommerce Website to sell gym suite and Nightwears
+Seamless application that works on all platforms, and mobile responsive
+
+WHAT IT INCLUDES
+
+About.tsx - Contains information about the company and it Leaders
+Account.tsx
+Cart.tsx - Handles cart details 
+Home.tsx -
+Header.tsx - Handles the toggle menu on mobile and the Nav on Desktop
+ProductDetails.tsx - Handles all product information
+Shop.tsx - Shows the products available for purchase 
+Checkout.tsx - Contains payment forms and methods/choices
+Product.tsx
+AppContext.tsx
+main.tsx
+DynamicForm.jsx
+PaystackIntegration.tsx - Contains API integration
+ProductCard.tsx
+ReviewSection.tsx - Contains Reviews from the user
+
+
+

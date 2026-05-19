@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import {supabase} from "../utils/supabase";
 import { Link } from 'react-router';
 import { ArrowRight, Shield, Truck, Heart } from 'lucide-react';
 import AOS from 'aos';
@@ -18,6 +19,12 @@ export function Home() {
       easing: 'ease-out',
     });
   }, []);
+  
+  // importing supabase//
+  const Home = () => {
+    console.log(supabase)
+  }
+
 
   // Add structured data for SEO
   useEffect(() => {

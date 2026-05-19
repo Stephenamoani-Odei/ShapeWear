@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { usePaystackPayment } from 'react-paystack';
 import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient('YOUR_SUPABASE_URL', 'YOUR_SUPABASE_ANON_KEY');
+import { supabase } from '../utils/supabase';
 
 const MomoCheckout = () => {
   // 1. Dynamic User State
@@ -26,7 +25,7 @@ const MomoCheckout = () => {
     email: formData.email || "customer@fallback.com",
     // Paystack takes amounts in sub-units (pesewas/cents). Multiply GHS by 100
     amount: parseFloat(formData.amount || 0) * 100, 
-    publicKey: 'pk_test_your_paystack_public_key',
+    publicKey: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
     currency: 'GHS', 
     channels: ['mobile_money', 'card'] // explicitly prompt Mobile Money
   };
