@@ -53,7 +53,7 @@ export function About() {
             </div>
             <div data-aos="fade-left">
               <ImageWithFallback
-                src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80"
+                src="./src/images/img12.jpg"
                 alt="Our mission"
                 className="w-full h-[400px] object-cover"
               />
@@ -137,19 +137,19 @@ export function About() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
-                name: 'Sarah Johnson',
+                name: 'Odei A. Stephen',
                 role: 'Founder & CEO',
-                image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80',
+                image: './src/images/img14.jpg',
               },
               {
-                name: 'Michael Chen',
+                name: 'Sarah Johnson',
                 role: 'Head of Product',
-                image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80',
+                image: './src/images/img15.jpg',
               },
               {
-                name: 'Emily Rodriguez',
+                name: 'Pablo Rodriguez',
                 role: 'Lead Designer',
-                image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80',
+                image: './src/images/img16.jpg',
               },
             ].map((member, index) => (
               <div key={index} data-aos="fade-up" data-aos-delay={index * 100}>

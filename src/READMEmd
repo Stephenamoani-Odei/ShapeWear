@@ -22,4 +22,8 @@ ProductCard.tsx
 ReviewSection.tsx - Contains Reviews from the user
 
 
+#fixed
+image Webpg not loading
+declared all image modules in asset.d.ts 
+
 

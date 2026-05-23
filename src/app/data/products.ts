@@ -182,7 +182,7 @@ export const products: Product[] = [
     id: 9,
     name: "Women's Power Jacket",
     price: 89.99,
-    image: 'https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=800&q=80',
+    image: './src/images/img10.jpg',
     category: 'Women',
     description: 'Wind-resistant jacket designed for outdoor workouts with a flattering feminine cut.',
     features: [
@@ -199,7 +199,7 @@ export const products: Product[] = [
     id: 10,
     name: "Men's Core Compression Shirt",
     price: 59.99,
-    image: 'https://images.unsplash.com/photo-1522252234503-e356532cafd5?w=800&q=80',
+    image: './src/images/img12.jpg',
     category: 'Men',
     description: 'Core compression shirt providing support and moisture control for intense training.',
     features: [
@@ -233,7 +233,7 @@ export const products: Product[] = [
     id: 12,
     name: 'Unisex Gym Hoodie',
     price: 69.99,
-    image: 'https://images.unsplash.com/photo-1556821840-3a63f15732ce?w=800&q=80',
+    image: './src/images/img11.jpg',
     category: 'Unisex',
     description: 'Soft and versatile gym hoodie for pre- and post-workout comfort.',
     features: [
