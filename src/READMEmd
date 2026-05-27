@@ -26,4 +26,87 @@ ReviewSection.tsx - Contains Reviews from the user
 image Webpg not loading
 declared all image modules in asset.d.ts 
 
+ 
+START DATE: 15th APRIL
+END DATE: 15TH MAY
+Phase 1: Planning & Architecture (Days 1–3)
+Before writing code, define the "Skeleton" of your application.
+1. The Tech Stack
+•	Frontend: React.js (Vite for faster builds).
+•	Styling: Tailwind CSS (for rapid UI development).
+•	State Management: Zustand or Redux Toolkit (Zustand is recommended for a 1-month timeline due to less boilerplate).
+•	Routing: React Router DOM.
+•	Backend/BaaS: Firebase (Auth, Firestore, Storage) or Supabase for a "no-backend" approach.
+•	Payments: Stripe API (Test Mode).
+2. Folder Structure
+Organize your project to stay scalable:
+Plaintext
+src/
+├── assets/          # Images, icons, logos
+├── components/      # Reusable UI (Buttons, Inputs, Navbar)
+├── features/        # Feature-specific logic (Cart, ProductList)
+├── hooks/           # Custom hooks (useAuth, useLocalStorage)
+├── pages/           # Main views (Home, ProductDetail, Checkout)
+├── store/           # Global state (Zustand/Redux)
+└── utils/           # Helper functions (Currency formatters)
+________________________________________
+
+
+Phase 2: Core UI & Routing (Days 4–10)
+Build the visual shells and the navigation logic.
+Essential Pages & Functions
+•	Home Page: Hero section, Featured Products, and Categories.
+•	Product Listing Page (PLP): Grid layout with Filtering (price, category) and Sorting (low-to-high).
+•	Product Detail Page (PDP): Image gallery, price, description, and "Add to Cart" button.
+•	Cart Drawer/Page: List of items, quantity toggles, and subtotal calculation.
+•	Authentication: Sign Up/Login forms with validation (Formik or React Hook Form).
+________________________________________
+Phase 3: State Management & Logic (Days 11–20)
+This is where the app starts "working."
+1. Global Cart Logic
+You need a central store to handle:
+•	addItem: Check if item exists (increment quantity) or add new.
+•	removeItem: Filter out the item ID.
+•	updateQuantity: Increase/Decrease limits.
+•	Persistence: Use localStorage so the cart survives a page refresh.
+2. Authentication Integration
+•	Connect your forms to Firebase/Supabase.
+•	Create Protected Routes (e.g., a user shouldn't see the "Order History" page if they aren't logged in).
+3. Product Data Fetching
+•	Use useEffect or TanStack Query (React Query) to fetch data from an API (like FakeStoreAPI) or your own database.
+________________________________________
+Phase 4: Checkout & Payments (Days 21–25)
+The most critical part of e-commerce.
+The Checkout Flow:
+1.	Shipping Form: Collect address and contact info.
+2.	Order Summary: Final check of items and taxes.
+3.	Payment Processing: * Integrate Stripe Elements.
+•	Handle the "Payment Intent" on the server/serverless function.
+•	Success/Failure feedback screens.
+________________________________________
+Phase 5: Optimization & Deployment (Days 26–30)
+1. Performance & UX
+•	Skeleton Screens: Show placeholders while products load.
+•	Image Optimization: Use modern formats (WebP) and lazy loading.
+•	Responsive Design: Ensure the mobile shopping experience is flawless.
+2. Deployment
+•	Hosting: Vercel or Netlify (highly optimized for React).
+•	Environment Variables: Secure your API keys (.env files).
+________________________________________
+Checklist of "Pro" Features to Include:
+•	Search Bar: Real-time filtering of products.
+•	Wishlist: A "Save for later" feature.
+•	Toasts/Notifications: Pop-up alerts when an item is added to the cart.
+•	Dark Mode: A nice-to-have for modern UI.
+Pro-Tip: Don't try to build a custom backend from scratch if you only have 30 days. Use Firebase or Supabase to handle the database and auth so you can spend 90% of your time perfecting the React frontend.
+
+
+
+
+CORE UI/UX DESIGN INFO
+1.	Site for colors: Picular.co
+2.	YouTube for simple animations
+3.	Icons8 for icons
+
+
 
