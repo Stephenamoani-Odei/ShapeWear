@@ -2,3 +2,60 @@
 @import './tailwind.css';
 @import './theme.css';
 @import 'aos/dist/aos.css';
+
+
+.black {
+  background-color: black;
+}
+
+.white {
+  background-color: white;
+  text-color: black !important;
+}
+
+.navy {
+  background-color: navy;
+}
+
+.red {
+  background-color: red;
+}
+
+.blue {
+  background-color: blue;
+}
+.green {
+  background-color: green;
+}
+
+.rose {
+  background-color: #ff007f;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.gray {
+  background-color: gray;
+}
+
+.purple {
+  background-color: purple;
+}
+
+.orange {
+  background-color: orange;
+}
+
+.olive {
+  background-color: olive;
+}
+
+.pink {
+  background-color: pink;
+}
+
+.graphite {
+  background-color: #41424C;
+}

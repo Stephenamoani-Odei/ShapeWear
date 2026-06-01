@@ -27,6 +27,8 @@ export function ProductDetail() {
 
   const product = products.find((p) => p.id === Number(id));
 
+  console.log('Product:', product);
+
   useEffect(() => {
     if (product && product.colors.length > 0) {
       setSelectedColor(product.colors[0]);
@@ -64,6 +66,7 @@ export function ProductDetail() {
           <div data-aos="fade-right">
             <div className="aspect-square bg-gray-100 overflow-hidden sticky top-24">
               <ImageWithFallback
+              onClick={() => setSelectedColor(product.colors[(product.colors.indexOf(selectedColor) + 1) % product.colors.length])}
                 src={product.image}
                 alt={product.name}
                 className="w-full h-full object-cover"
@@ -123,7 +126,7 @@ export function ProductDetail() {
                         onClick={() => setSelectedColor(color)}
                         className={`px-4 py-2 border rounded-full font-medium transition-colors ${
                           selectedColor === color
-                            ? 'bg-black text-white border-black'
+                            ? `${color.toLowerCase()} text-white border-black`
                             : 'bg-white text-gray-700 border-gray-300 hover:border-gray-500'
                         }`}
                       >
