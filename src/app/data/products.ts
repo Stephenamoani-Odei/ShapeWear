@@ -8,6 +8,9 @@ import img6 from '../../images/img6.jpg';
 import img7 from '../../images/img7.jpg';
 import img8 from '../../images/img8.jpg';
 import img9 from '../../images/img9.jpg';
+import img10 from '../../images/img10.webp';
+import img11 from '../../images/img11.webp';
+import img12 from '../../images/img12.jpg';
 
 export const products: Product[] = [
   {
@@ -182,7 +185,7 @@ export const products: Product[] = [
     id: 9,
     name: "Women's Power Jacket",
     price: 89.99,
-    image: './src/images/img10.jpg',
+    image: img10,
     category: 'Women',
     description: 'Wind-resistant jacket designed for outdoor workouts with a flattering feminine cut.',
     features: [
@@ -199,7 +202,7 @@ export const products: Product[] = [
     id: 10,
     name: "Men's Core Compression Shirt",
     price: 59.99,
-    image: './src/images/img12.jpg',
+    image: img12,
     category: 'Men',
     description: 'Core compression shirt providing support and moisture control for intense training.',
     features: [
@@ -233,7 +236,7 @@ export const products: Product[] = [
     id: 12,
     name: 'Unisex Gym Hoodie',
     price: 69.99,
-    image: './src/images/img11.jpg',
+    image: img11,
     category: 'Unisex',
     description: 'Soft and versatile gym hoodie for pre- and post-workout comfort.',
     features: [

@@ -3,6 +3,10 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { Target, Users, Award, Heart } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
+import img12 from '../../images/img12.jpg';
+import img14 from '../../images/img14.jpg';
+import img15 from '../../images/img15.jpg';
+import img16 from '../../images/img16.jpg';
 
 export function About() {
   useEffect(() => {
@@ -53,7 +57,7 @@ export function About() {
             </div>
             <div data-aos="fade-left">
               <ImageWithFallback
-                src="./src/images/img12.jpg"
+                src={img12}
                 alt="Our mission"
                 className="w-full h-[400px] object-cover"
               />
@@ -139,17 +143,17 @@ export function About() {
               {
                 name: 'Odei A. Stephen',
                 role: 'Founder & CEO',
-                image: './src/images/img14.jpg',
+                image: img14,
               },
               {
                 name: 'Sarah Johnson',
                 role: 'Head of Product',
-                image: './src/images/img15.jpg',
+                image: img15,
               },
               {
                 name: 'Pablo Rodriguez',
                 role: 'Lead Designer',
-                image: './src/images/img16.jpg',
+                image: img16,
               },
             ].map((member, index) => (
               <div key={index} data-aos="fade-up" data-aos-delay={index * 100}>
