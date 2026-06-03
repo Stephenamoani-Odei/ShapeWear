@@ -15,6 +15,7 @@ const Account = lazy(() => import('./pages/Account').then(module => ({ default: 
 const About = lazy(() => import('./pages/About').then(module => ({ default: module.About })));
 const NotFound = lazy(() => import('./pages/NotFound').then(module => ({ default: module.NotFound })));
 const Admin = lazy(() => import('./pages/Admin').then(module => ({ default: module.Admin })));
+const OrderTracker = lazy(() => import('./pages/OrderTracker').then(module => ({ default: module.OrderTracker })));
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,9 @@ export const router = createBrowserRouter([
       { path: 'account', Component: Account },
       { path: 'admin', Component: Admin },
       { path: 'about', Component: About },
+      // Order tracker — /track (list/lookup) and /track/:id (direct reference link)
+      { path: 'track', Component: OrderTracker },
+      { path: 'track/:id', Component: OrderTracker },
       { path: '*', Component: NotFound },
     ],
   },
