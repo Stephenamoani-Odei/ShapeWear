@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
 import { Lock, CreditCard, Phone } from 'lucide-react';
@@ -31,8 +31,9 @@ export function Checkout() {
   const total = cartTotal + shippingCost;
 
   // ─── Paystack config ────────────────────────────────────────────────────────
+  const orderRef = useRef(`order_${Date.now()}`);
   const paystackConfig = {
-    reference: `order_${Date.now()}`,
+    reference: orderRef.current,
     email: formData.email || 'customer@fallback.com',
     amount: Math.round(total * 100), // convert to pesewas
     publicKey: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY,
@@ -91,25 +92,41 @@ export function Checkout() {
         amount_ghs: total,
         paystack_reference: reference,
         payment_status: 'success',
-        shipping_address: `${formData.address}, ${formData.city}, ${formData.state} ${formData.zipCode}`,
+        order_status: 'pending',
+        user_id: user?.id ?? null,
+        shipping_address: {
+          name: `${formData.firstName} ${formData.lastName}`,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          zipCode: formData.zipCode,
+        },
         items: orderItems,
       },
     ]);
 
     if (error) {
-      console.error('Failed to save order:', error.message);
-      // Payment succeeded but order save failed — still let the user proceed
-      toast.warning('Payment received but order record failed to save. Please contact support.');
+      console.error('Supabase insert error:', error.message, error.details, error.hint);
+      toast.warning('Payment received but order record failed to save. Please contact support with reference: ' + reference);
+      return false;
     }
+
+    return true;
   };
 
   // ─── Payment success callback ────────────────────────────────────────────────
-  const onPaystackSuccess = async (reference: { reference: string }) => {
-    await saveOrder(reference.reference);
-    clearCart();
+ const onPaystackSuccess = async (reference: { reference: string }) => {
+  const saved = await saveOrder(reference.reference);
+  clearCart();
+  if (saved) {
     toast.success('Order placed successfully! 🎉');
+    navigate(`/track?ref=${reference.reference}`);  // sends them to their order
+  } else {
+    // Payment went through but save failed — keep them on page with the reference visible
+    toast.error(`Payment confirmed (ref: ${reference.reference}). Order save failed — please contact support.`);
     navigate('/');
-  };
+  }
+};
 
   // ─── Payment close/cancel callback ───────────────────────────────────────────
   const onPaystackClose = () => {
