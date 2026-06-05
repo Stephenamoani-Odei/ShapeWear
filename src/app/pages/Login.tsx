@@ -4,6 +4,8 @@ import { useApp } from '../context/AppContext';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { toast } from 'sonner';
+import { supabase } from '../utils/supabase';
+
 
 export function Login() {
   const [isLogin, setIsLogin] = useState(true);
@@ -119,13 +121,32 @@ export function Login() {
             </button>
           </div>
 
+          //  when the user types their email and clicks "Forgot password?", the reset email fires immediately.//
+
           {isLogin && (
-            <div className="mt-4 text-center">
-              <button className="text-sm text-gray-600 hover:text-black transition-colors">
-                Forgot password?
-              </button>
-            </div>
-          )}
+  <div className="mt-4 text-center">
+    <button
+      type="button"
+      onClick={async () => {
+        if (!email) {
+          toast.error('Enter your email above first');
+          return;
+        }
+        try {
+          await supabase.auth.resetPasswordForEmail(email, {
+            redirectTo: `${window.location.origin}/reset-password`,
+          });
+          toast.success('Password reset email sent — check your inbox!');
+        } catch (e) {
+          toast.error(e instanceof Error ? e.message : 'Failed to send reset email');
+        }
+      }}
+      className="text-sm text-gray-600 hover:text-black transition-colors"
+    >
+      Forgot password?
+    </button>
+  </div>
+)}
 
           <p className="text-xs text-gray-500 mt-6 text-center">
             By continuing, you agree to our Terms of Service and Privacy Policy.

@@ -148,9 +148,17 @@ export function AppProvider({ children }: { children: ReactNode }) {
         data: { name }, // stored in user_metadata
       },
     });
+    
     if (error) throw new Error(error.message);
     // Note: Supabase sends a confirmation email by default.
     // You can disable this in: Supabase Dashboard → Auth → Settings → "Enable email confirmations"
+  };
+
+  const resetPassword = async (email: string) => {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) throw new Error(error.message);
   };
 
   const logout = async () => {
@@ -158,6 +166,9 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setUser(null);
     localStorage.removeItem('user');
   };
+
+
+  
 
   // ─── Cart Actions ─────────────────────────────────────────────────────────────
   const addToCart = (product: Product, quantity = 1, size?: string, color?: string) => {
