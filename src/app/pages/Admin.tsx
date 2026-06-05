@@ -8,7 +8,7 @@ import 'aos/dist/aos.css';
 import { formatCurrency } from '../utils/currency';
 
 export function Admin() {
-  const { user } = useApp();
+  const { user, authLoading } = useApp();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders'>('dashboard');
 
@@ -18,14 +18,18 @@ export function Admin() {
       once: true,
     });
 
-    // NOTE: In production, check a proper 'role' field from your auth backend.
-    // The email check below is only for demo purposes.
+    if (authLoading) return;
     if (!user) {
       navigate('/login');
+      return;
     }
-  }, [user, navigate]);
 
-  if (!user) return null;
+    if (user.role !== 'admin') {
+      navigate('/');
+    }
+  }, [user, authLoading, navigate]);
+
+  if (authLoading || !user || user.role !== 'admin') return null;
 
   // Mock analytics data
   const analytics = {

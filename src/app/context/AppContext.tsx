@@ -51,6 +51,7 @@ export interface User {
   id: string;
   email: string;
   name: string;
+  role?: string;
   orders?: Order[];
 }
 
@@ -86,6 +87,7 @@ function mapSupabaseUser(supabaseUser: SupabaseUser): User {
       supabaseUser.user_metadata?.name ??
       supabaseUser.email?.split('@')[0] ??
       'User',
+    role: supabaseUser.user_metadata?.role ?? 'customer',
   };
 }
 
