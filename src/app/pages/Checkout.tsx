@@ -11,7 +11,7 @@ import { usePaystackPayment } from 'react-paystack';
 import { supabase } from '../utils/supabase';
 
 export function Checkout() {
-  const { cart, cartTotal, clearCart, user } = useApp();
+  const { cart, cartTotal, clearCart, user, refreshOrders } = useApp();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -119,6 +119,7 @@ export function Checkout() {
   const saved = await saveOrder(reference.reference);
   clearCart();
   if (saved) {
+    await refreshOrders();
     toast.success('Order placed successfully! 🎉');
     navigate(`/track?ref=${reference.reference}`);  // sends them to their order
   } else {
@@ -126,7 +127,7 @@ export function Checkout() {
     toast.error(`Payment confirmed (ref: ${reference.reference}). Order save failed — please contact support.`);
     navigate('/');
   }
-};
+};l
 
   // ─── Payment close/cancel callback ───────────────────────────────────────────
   const onPaystackClose = () => {

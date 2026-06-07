@@ -121,7 +121,7 @@ export function Login() {
             </button>
           </div>
 
-          //  when the user types their email and clicks "Forgot password?", the reset email fires immediately.//
+  
 
           {isLogin && (
   <div className="mt-4 text-center">

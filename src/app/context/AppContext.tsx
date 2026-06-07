@@ -59,6 +59,8 @@ interface AppContextType {
   cart: CartItem[];
   user: User | null;
   authLoading: boolean;
+  orders: Order[];
+  refreshOrders: () => Promise<void>;
   addToCart: (product: Product, quantity?: number, size?: string, color?: string) => void;
   removeFromCart: (productId: number, size?: string, color?: string) => void;
   updateQuantity: (productId: number, quantity: number, size?: string, color?: string) => void;
@@ -99,6 +101,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
 
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const [wishlist, setWishlist] = useState<number[]>(() => {
     const saved = localStorage.getItem('wishlist');
@@ -166,11 +169,52 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const logout = async () => {
     await supabase.auth.signOut();
     setUser(null);
+    setOrders([]);
     localStorage.removeItem('user');
   };
 
+  const refreshOrders = async () => {
+    if (!user?.email) {
+      setOrders([]);
+      return;
+    }
 
-  
+    const { data, error } = await supabase
+      .from('orders')
+      .select('id, created_at, order_status, amount_ghs, items, shipping_address')
+      .eq('user_email', user.email)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Failed to load user orders:', error.message);
+      return;
+    }
+
+    if (!data) {
+      setOrders([]);
+      return;
+    }
+
+    setOrders(
+      data.map((row: any) => ({
+        id: String(row.id),
+        date: row.created_at ?? new Date().toISOString(),
+        status: (row.order_status ?? 'pending') as Order['status'],
+        total: row.amount_ghs ?? 0,
+        items: row.items ?? [],
+        shippingAddress:
+          row.shipping_address && typeof row.shipping_address === 'string'
+            ? JSON.parse(row.shipping_address)
+            : row.shipping_address,
+      }))
+    );
+  };
+
+  useEffect(() => {
+    if (authLoading) return;
+    refreshOrders();
+  }, [user?.email, authLoading]);
+
 
   // ─── Cart Actions ─────────────────────────────────────────────────────────────
   const addToCart = (product: Product, quantity = 1, size?: string, color?: string) => {
@@ -273,6 +317,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
         addToWishlist,
         removeFromWishlist,
         isInWishlist,
+        orders,
+        refreshOrders,
       }}
     >
       {children}

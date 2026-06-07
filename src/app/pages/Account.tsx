@@ -7,7 +7,7 @@ import 'aos/dist/aos.css';
 import { formatCurrency } from '../utils/currency';
 
 export function Account() {
-  const { user, logout } = useApp();
+  const { user, logout, orders } = useApp();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -58,9 +58,9 @@ export function Account() {
                 <h3 className="font-semibold">Order History</h3>
               </div>
 
-              {user.orders && user.orders.length > 0 ? (
+              {orders && orders.length > 0 ? (
                 <div className="space-y-4">
-                  {user.orders.slice(0, 3).map((order) => (
+                  {orders.slice(0, 3).map((order) => (
                     <div key={order.id} className="border border-gray-200 p-4">
                       <div className="flex justify-between items-start mb-2">
                         <div>
@@ -85,9 +85,9 @@ export function Account() {
                       </button>
                     </div>
                   ))}
-                  {user.orders.length > 3 && (
+                  {orders.length > 3 && (
                     <button className="w-full mt-4 border-2 border-gray-300 px-4 py-2 font-semibold hover:border-gray-400 transition-colors text-sm">
-                      View All Orders ({user.orders.length})
+                      View All Orders ({orders.length})
                     </button>
                   )}
                 </div>
