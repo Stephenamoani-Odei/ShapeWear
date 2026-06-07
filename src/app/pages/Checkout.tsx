@@ -120,14 +120,14 @@ export function Checkout() {
   clearCart();
   if (saved) {
     await refreshOrders();
-    toast.success('Order placed successfully! 🎉');
+    toast.success('Order placed successfully! ');
     navigate(`/track?ref=${reference.reference}`);  // sends them to their order
   } else {
     // Payment went through but save failed — keep them on page with the reference visible
     toast.error(`Payment confirmed (ref: ${reference.reference}). Order save failed — please contact support.`);
     navigate('/');
   }
-};l
+};
 
   // ─── Payment close/cancel callback ───────────────────────────────────────────
   const onPaystackClose = () => {
