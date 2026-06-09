@@ -31,12 +31,12 @@ export function Account() {
   return (
     <div className="min-h-screen pt-24 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 data-aos="fade-up" className="mb-12">My Account</h1>
+        <h1 data-aos="fade-up" className="mb-6sm:mb-12">My Account</h1>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Profile */}
           <div data-aos="fade-up" data-aos-delay="0">
-            <div className="bg-white p-8 border border-gray-200">
+            <div className="bg-white p-8 sm:p-8 border border-gray-200">
               <div className="flex items-center justify-center mb-6">
                 <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center">
                   <User className="w-10 h-10 text-white" />

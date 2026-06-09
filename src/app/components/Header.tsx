@@ -33,7 +33,7 @@ export function Header() {
           {/* Actions */}
           <div className="flex items-center space-x-4">
             <button
-              className="hidden sm:block hover:text-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 p-1 rounded"
+              className=" hover:text-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 p-1 rounded"
               aria-label="Search products"
             >
               <Search className="w-5 h-5" />

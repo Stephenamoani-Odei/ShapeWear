@@ -76,7 +76,7 @@ export function ReviewSection({ productId, reviews = [], averageRating: _avgRati
 
   return (
     <div className="mt-16 border-t pt-16">
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4">
         <div>
           <h2 className="text-2xl font-bold mb-2">Customer Reviews</h2>
           {reviewCount > 0 && (

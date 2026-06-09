@@ -61,7 +61,7 @@ export function Admin() {
         {/* Navigation Tabs */}
         <div data-aos="fade-up" className="mb-8">
           <div className="border-b border-gray-200">
-            <nav className="flex space-x-8">
+            <nav className="flex space-x-4 sm:space-x-8 overflow-x-auto">
               {[
                 { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
                 { id: 'products', label: 'Products', icon: Package },
@@ -89,7 +89,7 @@ export function Admin() {
           <div className="space-y-8">
             {/* Analytics Cards */}
             <div data-aos="fade-up" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="bg-white p-6 border border-gray-200">
+              <div className="bg-white p-4 sm:p-6 border border-gray-200">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Total Revenue</p>

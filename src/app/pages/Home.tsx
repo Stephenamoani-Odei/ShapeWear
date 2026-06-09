@@ -79,10 +79,10 @@ export function Home() {
             transition={{ duration: 0.8 }}
             className="max-w-2xl"
           >
-            <h1 className="text-white mb-6">
+            <h1 className="text-white mb-4 text-3xl sm:text-5xl">
               Transform Your Fitness Journey
             </h1>
-            <p className="text-white/90 text-xl mb-8 max-w-lg">
+            <p className="text-white/90 text-base sm:text-xl sm:mb-8 max-w-lg">
               Premium equipment and gear designed for athletes who demand excellence.
             </p>
             <Link
@@ -175,7 +175,7 @@ export function Home() {
               <ImageWithFallback
                 src={img4}
                 alt="Training"
-                className="w-full h-[500px] object-cover"
+                className="w-full h-[260px] sm:h-[400px] lg:h-[500px] object-cover "
               />
             </div>
             <div data-aos="fade-left">

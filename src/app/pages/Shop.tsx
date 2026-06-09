@@ -99,7 +99,7 @@ export function Shop() {
   // ─── Loading state ─────────────────────────────────────────────────────────
   if (loading) {
     return (
-      <div className="min-h-screen pt-24 pb-20 flex items-center justify-center">
+      <div className="min-h-screen pt-16 sm:pt-24 pb-20 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4" />
           <p className="text-gray-600">Loading products...</p>
@@ -111,7 +111,7 @@ export function Shop() {
   // ─── Error state ───────────────────────────────────────────────────────────
   if (error) {
     return (
-      <div className="min-h-screen pt-24 pb-20 flex items-center justify-center">
+      <div className="min-h-screen pt-16 sm:pt-24 pb-20 flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-500 mb-4">{error}</p>
           <button
@@ -164,7 +164,7 @@ export function Shop() {
           {/* Filters Panel */}
           <div className={`lg:block ${showFilters ? 'block' : 'hidden'}`}>
             <div className="bg-gray-50 p-4 lg:p-6 rounded-lg">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
                 <h3 className="font-semibold text-lg">Filters</h3>
                 <button
                   onClick={clearFilters}

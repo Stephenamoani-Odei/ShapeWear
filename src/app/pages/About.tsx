@@ -19,7 +19,7 @@ export function About() {
   return (
     <div className="min-h-screen">
       {/* Hero */}
-      <section className="relative h-[60vh] flex items-center pt-16">
+      <section className="relative h-[50vh] sm:h-[60vh] min-h-[320px] flex items-center pt-16">
         <div className="absolute inset-0 z-0">
           <ImageWithFallback
             src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1600&q=80"
@@ -59,7 +59,7 @@ export function About() {
               <ImageWithFallback
                 src={img12}
                 alt="Our mission"
-                className="w-full h-[400px] object-cover"
+                className="w-full h-[220px] sm:h-[320px] lg:h-[400px] object-cover"
               />
             </div>
           </div>

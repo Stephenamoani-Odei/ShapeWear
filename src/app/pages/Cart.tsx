@@ -54,12 +54,12 @@ export function Cart() {
                   key={`${item.id}-${item.size}-${item.color}`}
                   data-aos="fade-up"
                   data-aos-delay={index * 100}
-                  className="flex gap-6 p-6 bg-white border border-gray-200"
+                  className="flex gap-4 p-4 sm:gap-6 sm:p-6 bg-white border border-gray-200"
                 >
                   <ImageWithFallback
                     src={item.image}
                     alt={item.name}
-                    className="w-32 h-32 object-cover flex-shrink-0"
+                    className="w-20 h-20 sm:w-32 sm:h-32 object-cover flex-shrink-0"
                   />
 
                   <div className="flex-1">
@@ -114,7 +114,7 @@ export function Cart() {
           <div>
             <div
               data-aos="fade-left"
-              className="bg-gray-50 p-8 sticky top-24 border border-gray-200"
+              className="bg-gray-50 p-4 sm:p-8 border border-grey-200 lg:sticky lg:top-24"
             >
               <h2 className="mb-6">Order Summary</h2>
 

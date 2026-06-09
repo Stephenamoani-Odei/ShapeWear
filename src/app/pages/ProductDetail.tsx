@@ -62,7 +62,7 @@ export function ProductDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           {/* Image */}
           <div data-aos="fade-right">
-            <div className="aspect-square bg-gray-100 overflow-hidden sticky top-24">
+            <div className="aspect-square bg-gray-100 overflow-hidden lg:sticky lg:top-24">
               <ImageWithFallback
                 src={product.image}
                 alt={product.name}
@@ -76,7 +76,7 @@ export function ProductDetail() {
             <div className="lg:sticky lg:top-24">
               <p className="text-sm text-gray-500 mb-2">{product.category}</p>
               <h1 className="mb-4">{product.name}</h1>
-              <p className="text-3xl font-bold mb-6">{formatCurrency(product.price)}</p>
+              <p className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6">{formatCurrency(product.price)}</p>
 
               <p className="text-gray-600 mb-8">{product.description}</p>
 
