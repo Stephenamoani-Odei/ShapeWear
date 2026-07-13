@@ -33,4 +33,25 @@ export default defineConfig({
 
   // File types to support raw imports. Never add .css, .tsx, or .ts files to this.
   assetsInclude: ['**/*.svg', '**/*.csv'],
+  
+  // Image optimization settings
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.')
+          const ext = info[info.length - 1]
+          if (/png|jpe?g|gif|svg|webp/i.test(ext)) {
+            return `assets/images/[name]-[hash][extname]`
+          } else if (/woff|woff2|eot|ttf|otf/.test(ext)) {
+            return `assets/fonts/[name]-[hash][extname]`
+          }
+          return `assets/[name]-[hash][extname]`
+        },
+      },
+    },
+    // Compress images at build time
+    minify: 'terser',
+    assetsInlineLimit: 4096,
+  },
 })

@@ -2,6 +2,7 @@ import { useEffect, useState, useMemo } from 'react';
 import { supabase } from '../utils/supabase';
 import { Product } from '../context/AppContext';
 import { ProductCard } from '../components/ProductCard';
+import { ErrorBoundary } from '../components/ErrorBoundary';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { Search, Filter, X } from 'lucide-react';
@@ -126,8 +127,9 @@ export function Shop() {
   }
 
   return (
-    <div className="min-h-screen pt-24 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <ErrorBoundary context="Shop Page">
+      <div className="min-h-screen pt-24 pb-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div data-aos="fade-up" className="text-center mb-12">
           <h1 className="mb-4">Shop Fit Wear for Women &amp; Men</h1>
@@ -283,5 +285,6 @@ export function Shop() {
         )}
       </div>
     </div>
+    </ErrorBoundary>
   );
 }

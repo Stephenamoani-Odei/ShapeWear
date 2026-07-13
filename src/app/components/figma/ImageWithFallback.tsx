@@ -5,7 +5,7 @@ const ERROR_IMG_SRC =
 
 export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElement>) {
   const [didError, setDidError] = useState(false)
-  const { src, alt = '', style, className, ...rest } = props
+  const { src, alt = '', style, className, loading = 'lazy', ...rest } = props
 
   useEffect(() => {
     setDidError(false)
@@ -22,6 +22,7 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
         alt={alt || 'Image unavailable'}
         className={className}
         style={style}
+        loading={loading}
         {...rest}
       />
     )
@@ -33,6 +34,7 @@ export function ImageWithFallback(props: React.ImgHTMLAttributes<HTMLImageElemen
       alt={alt}
       className={className}
       style={style}
+      loading={loading}
       onError={handleError}
       {...rest}
     />

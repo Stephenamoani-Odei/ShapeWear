@@ -33,16 +33,6 @@ export function Footer() {
                   New Arrivals
                 </a>
               </li>
-              <li>
-                <a href="#" className="hover:text-black transition-colors">
-                  Best Sellers
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-black transition-colors">
-                  Sale
-                </a>
-              </li>
             </ul>
           </div>
 
@@ -50,23 +40,15 @@ export function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Support</h3>
             <ul className="space-y-2 text-sm text-gray-600">
+              
+              
               <li>
-                <a href="#" className="hover:text-black transition-colors">
-                  Help Center
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-black transition-colors">
-                  Shipping & Returns
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-black transition-colors">
+                <a href="/ordertracker" className="hover:text-black transition-colors">
                   Track Order
                 </a>
               </li>
               <li>
-                <a href="#" className="hover:text-black transition-colors">
+                <a href="/about" className="hover:text-black transition-colors">
                   Contact Us
                 </a>
               </li>

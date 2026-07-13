@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { RouterProvider } from 'react-router';
-import { router } from './routes';
+import { router } from './routes.tsx';
 import { AppProvider } from './context/AppContext';
 
 export default function App() {

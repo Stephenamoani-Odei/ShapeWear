@@ -1,8 +1,9 @@
 import React from 'react';
 import { usePaystackPayment } from 'react-paystack';
+import { ErrorBoundary } from './ErrorBoundary';
 
 const PaystackCheckout = () => {
-  // 1. Configure the payment options
+  //  Configure the payment options
   const config = {
     reference: (new Date()).getTime().toString(), 
     email: "customer@example.com",
@@ -11,7 +12,7 @@ const PaystackCheckout = () => {
     currency: 'GHS', 
   };
 
-  // 2. Define success and close callbacks
+  //  Define success and close callbacks
   const onSuccess = (reference) => {
     // Implementation for what happens after a successful payment
     console.log("Payment Successful! Reference:", reference);
@@ -24,11 +25,12 @@ const PaystackCheckout = () => {
     alert("Payment cancelled.");
   };
 
-  // 3. Initialize the hook
+  //  Initialize the hook
   const initializePayment = usePaystackPayment(config);
 
   return (
-    <div style={{ textAlign: 'center', marginTop: '50px' }}>
+    <ErrorBoundary context="Paystack Payment">
+      <div style={{ textAlign: 'center', marginTop: '50px' }}>
       <h2>Checkout Form</h2>
       <p>Total Amount: ₵5,000</p>
       <button 
@@ -46,6 +48,7 @@ const PaystackCheckout = () => {
         Pay with Paystack
       </button>
     </div>
+    </ErrorBoundary>
   );
 };
 

@@ -6,6 +6,7 @@ import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { products } from '../data/products';
 import { ProductCard } from '../components/ProductCard';
+import { ErrorBoundary } from '../components/ErrorBoundary';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import bg1 from '../../images/bg1.jpg';
 import img4 from '../../images/img4.webp';
@@ -60,15 +61,21 @@ export function Home() {
   const featuredProducts = products.slice(0, 4);
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
+    <ErrorBoundary context="Home Page">
+      <div className="min-h-screen">
+        {/* Hero Section */}
       <section className="relative h-screen flex items-center">
         <div className="absolute inset-0 z-0">
-          <ImageWithFallback
-            src={bg1}
-            alt="Fitness lifestyle"
-            className="w-full h-full object-cover"
-          />
+          <picture>
+            <source srcSet={bg1} type="image/jpeg" media="(min-width: 0px)" />
+            <img
+              src={bg1}
+              alt="Fitness lifestyle"
+              className="w-full h-full object-cover"
+              loading="eager"
+              decoding="sync"
+            />
+          </picture>
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
 
@@ -214,6 +221,7 @@ export function Home() {
         </div>
       </section>
     </div>
+    </ErrorBoundary>
   );
 }
 

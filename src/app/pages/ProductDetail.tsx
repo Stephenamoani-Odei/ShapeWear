@@ -172,7 +172,7 @@ export function ProductDetail() {
               {product.inStock && (
                 <p className="text-sm text-green-600 mt-4 flex items-center space-x-2">
                   <Check className="w-4 h-4" />
-                  <span>In Stock - Ships within 2-3 business days</span>
+                  <span>In Stock - Ships within 3-5 business days</span>
                 </p>
               )}
             </div>

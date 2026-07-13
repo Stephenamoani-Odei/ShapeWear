@@ -92,7 +92,7 @@ export function Login() {
               />
               {!isLogin && (
                 <p className="text-xs text-gray-500 mt-1">
-                  Minimum 8 characters
+                  8 Minimum characters
                 </p>
               )}
             </div>

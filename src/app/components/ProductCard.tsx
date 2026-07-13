@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { Product } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
+import { ErrorBoundary } from './ErrorBoundary';
 import { Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { formatCurrency } from '../utils/currency';
@@ -25,7 +26,8 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <Link to={`/product/${product.id}`}>
+    <ErrorBoundary context="Product Card">
+      <Link to={`/product/${product.id}`}>
       <motion.div
         whileHover={{ y: -4 }}
         transition={{ duration: 0.2 }}
@@ -51,6 +53,9 @@ export function ProductCard({ product }: ProductCardProps) {
             src={product.image}
             alt={product.name}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            loading="lazy"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+            decoding="async"
           />
           {!product.inStock && (
             <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
@@ -66,6 +71,7 @@ export function ProductCard({ product }: ProductCardProps) {
           <p className="font-semibold">{formatCurrency(product.price)}</p>
         </div>
       </motion.div>
-    </Link>
+      </Link>
+    </ErrorBoundary>
   );
 }

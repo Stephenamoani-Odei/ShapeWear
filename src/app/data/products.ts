@@ -16,7 +16,7 @@ export const products: Product[] = [
   {
     id: 1,
     name: "Women's Sculpt Leggings",
-    price: 64.99,
+    price: 65.00,
     image: img1,
     category: 'Women',
     description: 'High-waisted sculpting leggings with four-way stretch and sweat-wicking comfort.',
@@ -36,7 +36,7 @@ export const products: Product[] = [
         userName: 'Sarah M.',
         rating: 5,
         comment: 'These leggings are amazing! Great fit and very comfortable for workouts.',
-        date: '2024-01-15'
+        date: '2026-01-15'
       },
       {
         id: 2,
@@ -53,7 +53,7 @@ export const products: Product[] = [
   {
     id: 2,
     name: "Men's Performance Tee",
-    price: 39.99,
+    price: 40.00,
     image: img5,
     category: 'Men',
     description: 'Lightweight performance tee engineered for breathability and fast-dry training sessions.',
@@ -73,7 +73,15 @@ export const products: Product[] = [
         userName: 'Mike T.',
         rating: 5,
         comment: 'Perfect fit and great quality. The material is breathable and comfortable.',
-        date: '2024-01-10'
+        date: '2026-01-10'
+      },
+      {
+        id: 2,
+        userId: '2',
+        userName: 'BarronStack',
+        rating: 4,
+        comment: 'Love the compression and the material is high quality. Would buy again.',
+        date: '2026-01-20'
       }
     ],
     averageRating: 5,
@@ -82,7 +90,7 @@ export const products: Product[] = [
   {
     id: 3,
     name: "Women's Seamless Sports Bra",
-    price: 49.99,
+    price: 50.00,
     image: img2,
     category: 'Women',
     description: 'Seamless medium-impact sports bra with molded cups and adjustable straps.',
@@ -95,11 +103,31 @@ export const products: Product[] = [
     ],
     colors: ['Black', 'Champagne', 'Lavender', 'Deep Teal'],
     inStock: true,
+    reviews: [
+      {
+        id: 3,
+        userId: '3',
+        userName: 'Karen T.',
+        rating: 5,
+        comment: 'Perfect fit and great quality. The material is breathable and comfortable.',
+        date: '2026-01-10'
+      },
+      {
+        id: 2,
+        userId: '2',
+        userName: 'Barron',
+        rating: 4.5,
+        comment: 'Love the compression and the material is high quality. Would buy again.',
+        date: '2026-01-20'
+      }
+    ],
+    averageRating: 5,
+    reviewCount: 1,
   },
   {
     id: 4,
     name: "Men's Compression Joggers",
-    price: 69.99,
+    price: 70.00,
     image: img6,
     category: 'Men',
     description: 'Compression joggers with tapered leg and secure pockets for training and recovery.',
@@ -116,7 +144,7 @@ export const products: Product[] = [
   {
     id: 5,
     name: "Women's Training Tank",
-    price: 34.99,
+    price: 35.00,
     image: img3,
     category: 'Women',
     description: 'Stretch training tank with breathable back panel and quick-dry performance.',
@@ -133,7 +161,7 @@ export const products: Product[] = [
   {
     id: 6,
     name: "Men's Lightweight Hoodie",
-    price: 79.99,
+    price: 80.00,
     image: img7,
     category: 'Men',
     description: 'Ultra-soft pullover hoodie with breathable fabric and a slim fit for layering.',
@@ -150,7 +178,7 @@ export const products: Product[] = [
   {
     id: 7,
     name: "Women's Mesh Running Shorts",
-    price: 54.99,
+    price: 55.00,
     image: img4,
     category: 'Women',
     description: 'Breathable running shorts with mesh ventilation and an internal liner.',
@@ -167,7 +195,7 @@ export const products: Product[] = [
   {
     id: 8,
     name: "Men's Stretch Flex Shorts",
-    price: 44.99,
+    price: 45.00,
     image: img8,
     category: 'Men',
     description: 'Stretch flex shorts with quick-dry material and an athletic fit for training.',
@@ -184,7 +212,7 @@ export const products: Product[] = [
   {
     id: 9,
     name: "Women's Power Jacket",
-    price: 89.99,
+    price: 90.00,
     image: img10,
     category: 'Women',
     description: 'Wind-resistant jacket designed for outdoor workouts with a flattering feminine cut.',
@@ -201,7 +229,7 @@ export const products: Product[] = [
   {
     id: 10,
     name: "Men's Core Compression Shirt",
-    price: 59.99,
+    price: 60.00,
     image: img12,
     category: 'Men',
     description: 'Core compression shirt providing support and moisture control for intense training.',
@@ -218,7 +246,7 @@ export const products: Product[] = [
   {
     id: 11,
     name: 'Unisex Training Socks',
-    price: 19.99,
+    price: 36.00,
     image: img9,
     category: 'Unisex',
     description: 'Cushioned training socks with arch support and breathable mesh zones.',
@@ -235,7 +263,7 @@ export const products: Product[] = [
   {
     id: 12,
     name: 'Unisex Gym Hoodie',
-    price: 69.99,
+    price: 70.00,
     image: img11,
     category: 'Unisex',
     description: 'Soft and versatile gym hoodie for pre- and post-workout comfort.',

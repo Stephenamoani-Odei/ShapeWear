@@ -126,14 +126,14 @@ export function Cart() {
                 <div className="flex justify-between">
                   <span className="text-gray-600">Shipping</span>
                   <span className="font-semibold">
-                    {cartTotal > 1000 ? 'FREE' : formatCurrency(9.99)}
+                    {cartTotal > 1000 ? 'FREE' : formatCurrency(10.00)}
                   </span>
                 </div>
                 <div className="border-t border-gray-300 pt-4">
                   <div className="flex justify-between">
                     <span className="font-semibold">Total</span>
                     <span className="font-bold text-xl">
-                      {formatCurrency(cartTotal + (cartTotal > 1000 ? 0 : 9.99))}
+                      {formatCurrency(cartTotal + (cartTotal > 1000 ? 0 : 10.00))}
                     </span>
                   </div>
                 </div>
