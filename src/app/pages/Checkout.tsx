@@ -28,7 +28,7 @@ export function Checkout() {
     momoPhone: '',
   });
 
-  const shippingCost = cartTotal > 1000 ? 0 : 9.99;
+  const shippingCost = cartTotal > 1000 ? 0 : 10.00;
   const total = cartTotal + shippingCost;
 
   // ─── Paystack config ────────────────────────────────────────────────────────
@@ -60,12 +60,12 @@ export function Checkout() {
 
   const initializePayment = usePaystackPayment(paystackConfig);
 
-  useEffect(() => {
-    AOS.init({ duration: 600, once: true });
-    if (cart.length === 0) {
-      navigate('/cart');
-    }
-  }, [cart, navigate]);
+ useEffect(() => {
+  AOS.refresh(); // instead of AOS.init(...) again
+  if (cart.length === 0) {
+    navigate('/cart');
+  }
+}, [cart, navigate]);
 
   // ─── Input change handler ────────────────────────────────────────────────────
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
