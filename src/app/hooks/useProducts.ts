@@ -68,7 +68,8 @@ export function useProducts() {
       const { data, error } = await supabase
         .from('products')
         .select('*')
-        .order('id');
+        .order('id', { ascending: false })
+        .limit(12);
 
       if (!isMounted) return;
 
