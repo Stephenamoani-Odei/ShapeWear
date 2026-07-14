@@ -16,7 +16,7 @@ export const products: Product[] = [
   {
     id: 1,
     name: "Women's Sculpt Leggings",
-    price: 65.00,
+    price: 50.00,
     image: img1,
     category: 'Women',
     description: 'High-waisted sculpting leggings with four-way stretch and sweat-wicking comfort.',
@@ -53,7 +53,7 @@ export const products: Product[] = [
   {
     id: 2,
     name: "Men's Performance Tee",
-    price: 40.00,
+    price: 45.00,
     image: img5,
     category: 'Men',
     description: 'Lightweight performance tee engineered for breathability and fast-dry training sessions.',
@@ -90,7 +90,7 @@ export const products: Product[] = [
   {
     id: 3,
     name: "Women's Seamless Sports Bra",
-    price: 50.00,
+    price: 55.00,
     image: img2,
     category: 'Women',
     description: 'Seamless medium-impact sports bra with molded cups and adjustable straps.',
@@ -144,7 +144,7 @@ export const products: Product[] = [
   {
     id: 5,
     name: "Women's Training Tank",
-    price: 35.00,
+    price: 40.00,
     image: img3,
     category: 'Women',
     description: 'Stretch training tank with breathable back panel and quick-dry performance.',
@@ -161,7 +161,7 @@ export const products: Product[] = [
   {
     id: 6,
     name: "Men's Lightweight Hoodie",
-    price: 80.00,
+    price: 70.00,
     image: img7,
     category: 'Men',
     description: 'Ultra-soft pullover hoodie with breathable fabric and a slim fit for layering.',
@@ -178,7 +178,7 @@ export const products: Product[] = [
   {
     id: 7,
     name: "Women's Mesh Running Shorts",
-    price: 55.00,
+    price: 50.00,
     image: img4,
     category: 'Women',
     description: 'Breathable running shorts with mesh ventilation and an internal liner.',
@@ -195,7 +195,7 @@ export const products: Product[] = [
   {
     id: 8,
     name: "Men's Stretch Flex Shorts",
-    price: 45.00,
+    price: 65.00,
     image: img8,
     category: 'Men',
     description: 'Stretch flex shorts with quick-dry material and an athletic fit for training.',
@@ -212,7 +212,7 @@ export const products: Product[] = [
   {
     id: 9,
     name: "Women's Power Jacket",
-    price: 90.00,
+    price: 80.00,
     image: img10,
     category: 'Women',
     description: 'Wind-resistant jacket designed for outdoor workouts with a flattering feminine cut.',
@@ -246,7 +246,7 @@ export const products: Product[] = [
   {
     id: 11,
     name: 'Unisex Training Socks',
-    price: 36.00,
+    price: 40.00,
     image: img9,
     category: 'Unisex',
     description: 'Cushioned training socks with arch support and breathable mesh zones.',

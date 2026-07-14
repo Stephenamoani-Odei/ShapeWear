@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
-import {supabase} from "../utils/supabase";
 import { Link } from 'react-router';
 import { ArrowRight, Shield, Truck, Heart } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import { products } from '../data/products';
+import { useProducts } from '../hooks/useProducts';
 import { ProductCard } from '../components/ProductCard';
-import { ErrorBoundary } from '../components/ErrorBoundary';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 import bg1 from '../../images/bg1.jpg';
 import img4 from '../../images/img4.webp';
@@ -21,12 +19,6 @@ export function Home() {
     });
   }, []);
   
-  // importing supabase//
-  const Home = () => {
-    console.log(supabase)
-  }
-
-
   // Add structured data for SEO
   useEffect(() => {
     const structuredData = {
@@ -58,24 +50,19 @@ export function Home() {
     };
   }, []);
 
+  const { products, loading: productsLoading } = useProducts();
   const featuredProducts = products.slice(0, 4);
 
   return (
-    <ErrorBoundary context="Home Page">
-      <div className="min-h-screen">
-        {/* Hero Section */}
+    <div className="min-h-screen">
+      {/* Hero Section */}
       <section className="relative h-screen flex items-center">
         <div className="absolute inset-0 z-0">
-          <picture>
-            <source srcSet={bg1} type="image/jpeg" media="(min-width: 0px)" />
-            <img
-              src={bg1}
-              alt="Fitness lifestyle"
-              className="w-full h-full object-cover"
-              loading="eager"
-              decoding="sync"
-            />
-          </picture>
+          <ImageWithFallback
+            src={bg1}
+            alt="Fitness lifestyle"
+            className="w-full h-full object-cover"
+          />
           <div className="absolute inset-0 bg-black/40"></div>
         </div>
 
@@ -150,17 +137,23 @@ export function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {featuredProducts.map((product, index) => (
-              <div
-                key={product.id}
-                data-aos="fade-up"
-                data-aos-delay={index * 100}
-              >
-                <ProductCard product={product} />
-              </div>
-            ))}
-          </div>
+          {productsLoading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-black mx-auto" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+              {featuredProducts.map((product, index) => (
+                <div
+                  key={product.id}
+                  data-aos="fade-up"
+                  data-aos-delay={index * 100}
+                >
+                  <ProductCard product={product} />
+                </div>
+              ))}
+            </div>
+          )}
 
           <div data-aos="fade-up" className="text-center mt-12">
             <Link
@@ -221,7 +214,6 @@ export function Home() {
         </div>
       </section>
     </div>
-    </ErrorBoundary>
   );
 }
 

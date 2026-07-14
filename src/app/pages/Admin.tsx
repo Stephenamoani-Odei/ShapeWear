@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
-import { products } from '../data/products';
+import { useProducts } from '../hooks/useProducts';
 import { BarChart3, Users, Package, DollarSign, Edit, Trash2, Plus } from 'lucide-react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -11,6 +11,7 @@ export function Admin() {
   const { user, authLoading } = useApp();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<'dashboard' | 'products' | 'orders'>('dashboard');
+  const { products, loading: productsLoading } = useProducts();
 
   useEffect(() => {
     AOS.init({
@@ -196,7 +197,14 @@ export function Admin() {
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
-                    {products.map((product) => (
+                    {productsLoading && (
+                      <tr>
+                        <td colSpan={5} className="px-6 py-8 text-center text-sm text-gray-500">
+                          Loading products...
+                        </td>
+                      </tr>
+                    )}
+                    {!productsLoading && products.map((product) => (
                       <tr key={product.id}>
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">

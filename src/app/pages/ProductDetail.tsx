@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router';
-import { products } from '../data/products';
+import { useProduct } from '../hooks/useProducts';
 import { useApp } from '../context/AppContext';
 import { Check, ShoppingCart } from 'lucide-react';
 import { ImageWithFallback } from '../components/figma/ImageWithFallback';
@@ -25,7 +25,7 @@ export function ProductDetail() {
     });
   }, []);
 
-  const product = products.find((p) => p.id === Number(id));
+  const { product, loading, error } = useProduct(id ? Number(id) : undefined);
 
   useEffect(() => {
     if (product && product.colors.length > 0) {
@@ -33,7 +33,18 @@ export function ProductDetail() {
     }
   }, [product]);
 
-  if (!product) {
+  if (loading) {
+    return (
+      <div className="min-h-screen pt-24 pb-20 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4" />
+          <p className="text-gray-600">Loading product...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || !product) {
     return (
       <div className="min-h-screen pt-24 pb-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -54,6 +65,8 @@ export function ProductDetail() {
     toast.success('Added to cart!');
   };
 
+  const features = Array.isArray(product.features) ? product.features : [];
+  const colors = Array.isArray(product.colors) ? product.colors : [];
   const sizes = ['S', 'M', 'L', 'XL'];
 
   return (
@@ -84,7 +97,7 @@ export function ProductDetail() {
               <div className="mb-8">
                 <h3 className="font-semibold mb-4">Key Features</h3>
                 <ul className="space-y-2">
-                  {product.features.map((feature, index) => (
+                  {features.map((feature, index) => (
                     <li key={index} className="flex items-start space-x-2">
                       <Check className="w-5 h-5 text-green-600 mt-0.5 flex-shrink-0" />
                       <span className="text-gray-700">{feature}</span>
@@ -113,11 +126,11 @@ export function ProductDetail() {
                 </div>
               </div>
 
-              {product.colors.length > 0 && (
+              {colors.length > 0 && (
                 <div className="mb-6">
                   <h3 className="font-semibold mb-3">Color</h3>
                   <div className="flex flex-wrap gap-3">
-                    {product.colors.map((color) => (
+                    {colors.map((color) => (
                       <button
                         key={color}
                         onClick={() => setSelectedColor(color)}
