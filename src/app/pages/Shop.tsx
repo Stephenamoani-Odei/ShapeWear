@@ -31,7 +31,8 @@ export function Shop() {
       const { data, error } = await supabase
         .from('products')
         .select('*')
-        .order('id');
+        .order('id')
+        .limit(12);
 
       if (error) {
         setError('Failed to load products. Please try again.');
