@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../utils/supabase';
 import { Product } from '../context/AppContext';
 
+export const CATALOG_PRODUCT_LIMIT = 12;
+
 function normalizeStringArray(value: unknown): string[] {
   if (Array.isArray(value)) {
     return value.filter((item): item is string => typeof item === 'string' && item.trim().length > 0);
@@ -50,8 +52,8 @@ export function mapRow(row: any): Product {
 }
 
 /**
- * Fetches ALL products from Supabase. Use this on pages that need the
- * full catalog (Shop, Home, Admin).
+ * Fetches the site's twelve-product catalog from Supabase so every page
+ * displays the same inventory set.
  */
 export function useProducts() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -69,7 +71,7 @@ export function useProducts() {
         .from('products')
         .select('*')
         .order('id', { ascending: false })
-        .limit(12);
+        .limit(CATALOG_PRODUCT_LIMIT);
 
       if (!isMounted) return;
 

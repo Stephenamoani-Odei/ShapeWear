@@ -1,17 +1,14 @@
 import { useEffect, useState, useMemo } from 'react';
-import { supabase } from '../utils/supabase';
-import { Product } from '../context/AppContext';
 import { ProductCard } from '../components/ProductCard';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { Search, Filter, X } from 'lucide-react';
 import { formatCurrency } from '../utils/currency';
+import { useProducts } from '../hooks/useProducts';
 
 export function Shop() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { products, loading, error } = useProducts();
 
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -20,7 +17,6 @@ export function Shop() {
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<'default' | 'price-asc' | 'price-desc' | 'name'>('default');
 
-  // ─── Fetch products from Supabase ──────────────────────────────────────────
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
 
@@ -69,6 +65,12 @@ export function Shop() {
 
   const categories = ['All', ...new Set(products.map((p) => p.category))];
   const maxPrice = products.length > 0 ? Math.max(...products.map((p) => p.price)) : 200;
+
+  useEffect(() => {
+    if (products.length > 0) {
+      setPriceRange([0, maxPrice]);
+    }
+  }, [maxPrice, products.length]);
 
   const filteredProducts = useMemo(() => {
     return products
