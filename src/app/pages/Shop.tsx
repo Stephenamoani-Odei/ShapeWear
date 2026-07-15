@@ -1,17 +1,14 @@
 import { useEffect, useState, useMemo } from 'react';
-import { supabase } from '../utils/supabase';
-import { Product } from '../context/AppContext';
 import { ProductCard } from '../components/ProductCard';
 import { ErrorBoundary } from '../components/ErrorBoundary';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { Search, Filter, X } from 'lucide-react';
 import { formatCurrency } from '../utils/currency';
+import { useProducts } from '../hooks/useProducts';
 
 export function Shop() {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { products, loading, error } = useProducts();
 
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -20,54 +17,18 @@ export function Shop() {
   const [showFilters, setShowFilters] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<'default' | 'price-asc' | 'price-desc' | 'name'>('default');
 
-  // ─── Fetch products from Supabase ──────────────────────────────────────────
   useEffect(() => {
     AOS.init({ duration: 800, once: true });
-
-    async function fetchProducts() {
-      setLoading(true);
-      setError(null);
-
-      const { data, error } = await supabase
-        .from('products')
-        .select('*')
-        .order('id');
-
-      if (error) {
-        setError('Failed to load products. Please try again.');
-        console.error('Supabase error:', error.message);
-      } else {
-        // Map snake_case DB columns → camelCase Product shape
-        const mapped: Product[] = (data ?? []).map((row) => ({
-          id: row.id,
-          name: row.name,
-          price: row.price,
-          image: row.image,
-          category: row.category,
-          description: row.description,
-          features: row.features ?? [],
-          colors: row.colors ?? [],
-          inStock: row.in_stock,
-          averageRating: row.average_rating ?? undefined,
-          reviewCount: row.review_count ?? undefined,
-        }));
-        setProducts(mapped);
-
-        // Set price range ceiling based on actual data
-        if (mapped.length > 0) {
-          const max = Math.max(...mapped.map((p) => p.price));
-          setPriceRange([0, max]);
-        }
-      }
-
-      setLoading(false);
-    }
-
-    fetchProducts();
   }, []);
 
   const categories = ['All', ...new Set(products.map((p) => p.category))];
   const maxPrice = products.length > 0 ? Math.max(...products.map((p) => p.price)) : 200;
+
+  useEffect(() => {
+    if (products.length > 0) {
+      setPriceRange([0, maxPrice]);
+    }
+  }, [maxPrice, products.length]);
 
   const filteredProducts = useMemo(() => {
     return products
