@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase'
 import { useAdmin } from '../contexts/AdminContext'
 import { toast } from 'sonner'
 import { Trash2, Loader2, UserPlus } from 'lucide-react'
+import { ConfirmDialog } from './ConfirmDialog'
 
 export function Admins() {
   const { isSuperAdmin, admin } = useAdmin()
@@ -69,20 +70,43 @@ export function Admins() {
     }
   }
 
-  const deleteAdmin = async (id: string, adminEmail: string) => {
-    if (!confirm(`Remove ${adminEmail}?`)) return
-    
+  const [deletingId, setDeletingId] = useState<string | null>(null)
+  const [adminPendingDelete, setAdminPendingDelete] = useState<{ id: string; email: string } | null>(null)
+
+  const requestDeleteAdmin = (id: string, adminEmail: string) => {
+    setAdminPendingDelete({ id, email: adminEmail })
+  }
+
+  const cancelDeleteAdmin = () => {
+    if (deletingId) return
+    setAdminPendingDelete(null)
+  }
+
+  const confirmDeleteAdmin = async () => {
+    if (!adminPendingDelete) return
+    const { id } = adminPendingDelete
+
+    setDeletingId(id)
     try {
-      const { error } = await supabase.from('admin_users').delete().eq('id', id)
+      // Uses a server-side RPC (security definer) so this works regardless of table-level
+      // RLS policies, and so the underlying auth user is removed too, not just the row.
+      const { data, error } = await supabase.rpc('admin_delete_user_automated', {
+        target_admin_id: id,
+      })
+
       if (error) throw error
-      
-      // Also remove from name mapping
-      await supabase.from('admin_name_mapping').delete().eq('email', adminEmail)
-      
+      if (data?.success === false) {
+        throw new Error(data.message || 'Failed to remove admin')
+      }
+
       toast.success('Admin removed from tracking metrics.')
+      setAdminPendingDelete(null)
       fetchAdmins()
     } catch (err: any) {
+      console.error(err)
       toast.error(err.message || 'Failed to complete profile deletion.')
+    } finally {
+      setDeletingId(null)
     }
   }
 
@@ -103,8 +127,8 @@ export function Admins() {
       </div>
 
       {/* --- ADMINS LIST DATAGRID TABLE --- */}
-      <div style={{ backgroundColor: '#fff', padding: '1.5rem', borderRadius: '0.75rem', boxShadow: '0 1px 3px rgba(0,0,0,0.1)' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+      <div className="table-container">
+        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '560px' }}>
           <thead>
             <tr style={{ borderBottom: '2px solid #f3f4f6', color: '#4b5563', fontSize: '0.875rem' }}>
               <th style={{ padding: '0.75rem 0.5rem' }}>EMAIL</th>
@@ -134,11 +158,12 @@ export function Admins() {
                 </td>
                 <td style={{ padding: '1rem 0.5rem', textAlign: 'right' }}>
                   {adm.email !== admin?.email ? (
-                    <button 
-                      onClick={() => deleteAdmin(adm.id, adm.email)}
-                      style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.25rem' }}
+                    <button
+                      onClick={() => requestDeleteAdmin(adm.id, adm.email)}
+                      disabled={deletingId === adm.id}
+                      style={{ background: 'none', border: 'none', cursor: deletingId === adm.id ? 'not-allowed' : 'pointer', padding: '0.25rem' }}
                     >
-                      <Trash2 size={16} color="#dc2626" />
+                      {deletingId === adm.id ? <Loader2 size={16} className="animate-spin" color="#dc2626" /> : <Trash2 size={16} color="#dc2626" />}
                     </button>
                   ) : (
                     <span style={{ fontSize: '0.75rem', color: '#9ca3af', fontStyle: 'italic' }}>You (Active)</span>
@@ -184,6 +209,17 @@ export function Admins() {
           </button>
         </form>
       </div>
+
+      <ConfirmDialog
+        open={!!adminPendingDelete}
+        title="Remove this admin?"
+        message={adminPendingDelete ? `"${adminPendingDelete.email}" will lose access immediately and their login will be deleted. This can't be undone.` : ''}
+        confirmLabel="Remove"
+        danger
+        loading={!!deletingId}
+        onConfirm={confirmDeleteAdmin}
+        onCancel={cancelDeleteAdmin}
+      />
     </div>
   )
 }

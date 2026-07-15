@@ -10,6 +10,11 @@ body {
   background: #f9fafb;
   margin: 0;
   padding: 0;
+  overflow-x: hidden; /* safety net: internal scroll containers (tables, etc.) handle their own scrolling */
+}
+
+html {
+  overflow-x: hidden;
 }
 
 /* Ensure root takes full viewport without any centering or borders */

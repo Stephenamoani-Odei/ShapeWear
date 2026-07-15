@@ -39,16 +39,24 @@ export function Orders() {
     <div>
       <h1 style={{ fontSize: '1.5rem', fontWeight: 'bold', marginBottom: '1rem' }}>Orders</h1>
       <div className="table-container">
-        <table style={{ width: '100%' }}>
+        <table style={{ width: '100%', minWidth: '900px' }}>
           <thead>
             <tr>
-              <th>ID</th><th>Customer</th><th>Email</th><th>Amount</th><th>Payment</th><th>Status</th><th>Action</th>
+              <th>ID</th><th>Date</th><th>Customer</th><th>Email</th><th>Amount</th><th>Payment</th><th>Status</th><th>Action</th>
             </tr>
           </thead>
           <tbody>
             {orders.map(order => (
               <tr key={order.id}>
                 <td>{order.id}</td>
+                <td style={{ whiteSpace: 'nowrap', color: '#6b7280', fontSize: '0.875rem' }}>
+                  {order.created_at
+                    ? new Date(order.created_at).toLocaleString(undefined, {
+                        year: 'numeric', month: 'short', day: 'numeric',
+                        hour: '2-digit', minute: '2-digit'
+                      })
+                    : '—'}
+                </td>
                 <td>{order.customer_name}</td>
                 <td>{order.user_email}</td>
                 <td>{formatCurrency(order.amount_ghs)}</td>
@@ -72,7 +80,7 @@ export function Orders() {
               </tr>
             ))}
             {orders.length === 0 && (
-              <tr><td colSpan={7} style={{ textAlign: 'center', padding: '2rem' }}>No orders yet</td></tr>
+              <tr><td colSpan={8} style={{ textAlign: 'center', padding: '2rem' }}>No orders yet</td></tr>
             )}
           </tbody>
         </table>

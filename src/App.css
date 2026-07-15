@@ -26,12 +26,101 @@ body {
   left: 0;
   bottom: 0;
   overflow-y: auto;
+  z-index: 60;
+  transition: transform 0.25s ease;
 }
 
 .main-content {
   margin-left: 260px;
   flex: 1;
   padding: 2rem;
+  min-width: 0; /* prevents grid/flex children from forcing horizontal overflow */
+  width: 100%;
+}
+
+.sidebar-close-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #6b7280;
+  padding: 0.25rem;
+}
+
+/* Mobile top bar (hidden on desktop) */
+.mobile-topbar {
+  display: none;
+}
+
+.sidebar-overlay {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .admin-layout {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    transform: translateX(-100%);
+    width: 78vw;
+    max-width: 280px;
+    box-shadow: 0 0 24px rgba(0,0,0,0.15);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 1.25rem;
+    padding-top: 1rem;
+  }
+
+  .mobile-topbar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.875rem 1.25rem;
+    background: white;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+
+  .mobile-topbar button {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    color: #111827;
+    display: flex;
+    width: auto;
+  }
+
+  .mobile-topbar .logo {
+    font-size: 1.05rem;
+  }
+
+  .sidebar-close-btn {
+    display: flex;
+  }
+
+  .sidebar-overlay.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 50;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 1rem;
+  }
 }
 
 /* Sidebar styling */
@@ -92,9 +181,42 @@ body {
 /* Cards & Stats */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
   gap: 1.5rem;
   margin-bottom: 2rem;
+}
+
+/* Responsive grid helpers used by Dashboard/Products in place of raw inline minmax,
+   which overflows on viewports narrower than the pixel minimum. */
+.responsive-grid-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: 1.25rem;
+}
+
+.responsive-grid-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+  gap: 1.5rem;
+}
+
+.responsive-grid-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 640px) {
+  .table-container table {
+    font-size: 0.8125rem;
+  }
+  th, td {
+    padding: 0.6rem 0.6rem;
+  }
+  .login-container {
+    padding: 1rem;
+  }
 }
 
 .stat-card {
@@ -214,7 +336,8 @@ label {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 50;
+  z-index: 70;
+  padding: 1rem;
 }
 
 .modal {
@@ -244,6 +367,42 @@ label {
   border: none;
   cursor: pointer;
   font-size: 1.25rem;
+}
+
+/* Promotions */
+.promo-badge {
+  display: inline-block;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  background: #fee2e2;
+  color: #b91c1c;
+  white-space: nowrap;
+}
+
+.price-original {
+  text-decoration: line-through;
+  color: #9ca3af;
+  font-size: 0.8125rem;
+  margin-right: 0.375rem;
+}
+
+.price-sale {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.promo-inline-form {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.promo-inline-form input {
+  width: 64px;
+  padding: 0.35rem 0.4rem;
 }
 
 /* Status badges */
