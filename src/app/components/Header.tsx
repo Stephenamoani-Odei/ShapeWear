@@ -13,7 +13,7 @@ export function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2" aria-label="Home page">
+          <Link to="home" className="flex items-center space-x-2" aria-label="Home page">
             <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
               <span className="text-white font-bold text-sm">HW</span>
             </div>
@@ -34,7 +34,7 @@ export function Header() {
           <div className="flex items-center space-x-4">
             <button
               className=" hover:text-gray-600 transition-colors focus:outline-none focus:ring-2 focus:ring-black focus:ring-offset-2 p-1 rounded"
-              aria-label="Search products"
+              aria-label="Search box"
             >
               <Search className="w-5 h-5" />
             </button>

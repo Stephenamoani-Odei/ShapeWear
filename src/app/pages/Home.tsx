@@ -13,7 +13,7 @@ import { motion } from 'motion/react';
 export function Home() {
   useEffect(() => {
     AOS.init({
-      duration: 1000,
+      duration: 600,
       once: true,
       easing: 'ease-out',
     });
@@ -100,8 +100,8 @@ export function Home() {
                   <Truck className="w-8 h-8 text-white" />
                 </div>
               </div>
-              <h3 className="font-semibold mb-2">Free Shipping</h3>
-              <p className="text-gray-600">On orders over ₵100</p>
+              <h3 className="font-semibold mb-2">Free Delivery</h3>
+              <p className="text-gray-600">On orders over ₵1,000</p>
             </div>
 
             <div data-aos="fade-up" data-aos-delay="100" className="text-center">

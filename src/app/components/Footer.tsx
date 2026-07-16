@@ -28,11 +28,6 @@ export function Footer() {
                   All Products
                 </Link>
               </li>
-              <li>
-                <a href="#" className="hover:text-black transition-colors">
-                  New Arrivals
-                </a>
-              </li>
             </ul>
           </div>
 

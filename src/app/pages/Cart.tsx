@@ -124,7 +124,7 @@ export function Cart() {
                   <span className="font-semibold">{formatCurrency(cartTotal)}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Shipping</span>
+                  <span className="text-gray-600">Delivery</span>
                   <span className="font-semibold">
                     {cartTotal > 1000 ? 'FREE' : formatCurrency(10.00)}
                   </span>

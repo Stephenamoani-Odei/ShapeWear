@@ -6,7 +6,7 @@ const PaystackCheckout = () => {
   //  Configure the payment options
   const config = {
     reference: (new Date()).getTime().toString(), 
-    email: "customer@example.com",
+    email: "shapewear.com",
     amount: 5000, 
     publicKey: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY, 
     currency: 'GHS', 
